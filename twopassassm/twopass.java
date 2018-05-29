@@ -301,7 +301,7 @@ class twopass {
                                 String s1="";
                                 if(isInteger(data[1]))
                                     s1=data[1];
-                                else if(hp1.containsKey(data[1]))
+                                if(hp1.containsKey(data[1]))
                                     s1 = hp1.get(data[1]);
                                 //System.out.println(s1);
                                 if(!s1.equals(""))
