@@ -1,0 +1,7 @@
+5
+A Bxy
+B CD
+C A
+C c
+D d
+
