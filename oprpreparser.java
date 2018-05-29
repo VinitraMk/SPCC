@@ -1,8 +1,18 @@
 import java.util.*;
 import java.io.*;
 import java.lang.*;
+class Top {
+    String top;
+    boolean isTop;
+    public Top(String top,boolean isTop) {
+        this.top=top;
+        this.isTop=isTop;
+    }
+}
+
 class oprpreparser {
-    static String s,curr,top,out="";
+    static String s,curr,out="";
+    static Top top;
     static int i,j,k,n;
     static ArrayList<String> list = new ArrayList();
     static ArrayList<String> input = new ArrayList();
@@ -13,25 +23,35 @@ class oprpreparser {
 		n=s.length();
         list.add("$");
         out+="$";
+        int outi=1;
+        int fl=0;
+        int mi=-1;
         for(i=0;i<n;i++) {
             curr=""+s.charAt(i);
             top=getTop();
-            if(chkprec(top,curr)) {
+            if(top.isTop==true && top.top.equals(curr)) {
+                fl=1;
+                mi=outi;
+            }
+            if(chkprec(top.top,curr)) {
                 list.add(curr);
                 out+="<";
                 out+=curr;
+                outi+=2;
             }
             else {
                 list.set(list.size()-1,"E");
+                list.add(curr);
                 out+=">";
                 out+=curr;
+                outi+=2;;
             }
         }
 
 
         out+=">$";
         //System.out.println();
-        System.out.println("\nDefined precedence: "+out+"\n");
+        System.out.println("\nDefined precedence: "+out+" "+mi+"\n");
         list.clear();
 
         int m=out.length();
@@ -54,6 +74,10 @@ class oprpreparser {
             }
             else if(out.charAt(i)=='>'){
                 printStack();
+                if(mi==i) {
+                    System.out.println("Error\t   End");
+                    break;
+                }
                 i++;
                 next=""+out.charAt(i);
                 System.out.println(prev+" > "+next+"\t   Pop,Reduce");
@@ -149,16 +173,20 @@ class oprpreparser {
         return main;
     }
 
-    public static String getTop() {
+    public static Top getTop() {
         String temp="";
+        boolean isTop=true;
         for(int i=list.size()-1;i>=0;i--) {
             String str = list.get(i);
             if(!str.equals("E")) {
                 temp=str;
                 break;
             }
+            else
+                isTop=false;
         }
-        return temp;
+        Top mTop = new Top(temp,isTop);
+        return mTop;
     }
 
     public static void printStack() {
@@ -173,6 +201,8 @@ class oprpreparser {
     public static boolean chkprec(String s,String r) {
         if(s.equals("$"))
             return true;
+        else if(s.equals(r) && !s.equals("$"))
+            return false;
         else if (s.equals("a"))
             return false;
         else if (r.equals("a"))
