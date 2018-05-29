@@ -29,6 +29,7 @@ class opr {
         list.add("$");
         i=0;
         boolean done=false;
+        boolean wrong=false;
         while(i<m && done==false) {
             String curr="";
             curr+=main.charAt(i);
@@ -59,7 +60,7 @@ class opr {
                 if(!list.contains("a")) {
                     String rep=getString();
                     Top top1=getTop();
-                    if(top1.top.equals("*") && !curr.equals("$") && !rep.equals("E")) {
+                    if(top1.top.equals("*") && !curr.equals("$")) {
                         printStack();
                         System.out.println("*>"+curr+"\tPop,Reduce");
                         if(top1.top.equals("*")) {
@@ -70,7 +71,11 @@ class opr {
                             }
                             list.remove(k);
                         }
-                        else if(top1.top.equals("+")) {
+                    }
+                    if(top1.top.equals("+") && !curr.equals("$")) {
+                        printStack();
+                        System.out.println("+>"+curr+"\tPop,Reduce");
+                        if(top1.top.equals("+")) {
                             k=list.size()-1;
                             while(!list.get(k).equals("+")) {
                                 list.remove(k);
@@ -79,29 +84,47 @@ class opr {
                             list.remove(k);
                         }
                     }
+
                     while(!top1.top.equals("$") && curr.equals("$")) {
                         printStack();
                         System.out.println(top1.top+">"+curr+"\tPop,Reduce");
                         if(top1.top.equals("*")) {
                             k=list.size()-1;
+                            boolean del=false;
                             while(!list.get(k).equals("*")) {
                                 list.remove(k);
                                 k--;
+                                del=true;
                             }
-                            list.remove(k);
+                            if(!del)
+                                wrong=true;
+                            else
+                                list.remove(k);
                         }
                         else if(top1.top.equals("+")) {
                             k=list.size()-1;
+                            boolean del=false;
                             while(!list.get(k).equals("+")) {
                                 list.remove(k);
                                 k--;
+                                del=true;
                             }
-                            list.remove(k);
+                            if(!del) 
+                                wrong=true;
+                            else
+                                list.remove(k);
                         }
+                        if(wrong)
+                            break;
                         top1=getTop();
                     }
                     //printStack();
                     //System.out.println("$accept$\tEnd");
+                    if(wrong) {
+                        printStack();
+                        System.out.println("Error\tEnd");
+                        break;
+                    }
                     top1=getTop();
                     if(top1.top.equals("$") && curr.equals("$")) {
                         done=true;
@@ -113,7 +136,7 @@ class opr {
         }
         if(done) 
             System.out.println("\nGiven string belongs to grammar");
-        else
+        else if(done || wrong)
             System.out.println("\nGiven string does not belong to grammar");
 	}
 
