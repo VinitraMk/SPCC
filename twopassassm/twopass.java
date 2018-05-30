@@ -108,7 +108,7 @@ class twopass {
                             }
                             vl=lc;
                             break;
-                         case "DS":
+                         /*case "DS":
                             int index=tokens[i+1].indexOf("F");
                             int x=0;
                             if(index>0) {
@@ -121,10 +121,11 @@ class twopass {
                                 System.out.println(temp);
                             }
                             lc+=x;
-                            break;
-                         case "DC":
-                            index=tokens[i+1].indexOf("F");
-                            x=0;
+                            break;*/
+                          case "DC":
+                          case "DS":
+                            int index=tokens[i+1].indexOf("F");
+                            int x=0;
                             if(index>0) {
                                 x = Integer.parseInt(tokens[i+1].substring(0,tokens[i+1].length()-1));
                                 x*=4;
@@ -223,7 +224,6 @@ class twopass {
         int stn=1;
 
         try {
-
             BufferedReader br = new BufferedReader(new FileReader("symb.txt"));
             String in="";
             while((in=br.readLine())!=null) {
