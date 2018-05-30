@@ -31,13 +31,13 @@ class codegen {
             String tt="";
             tt+=t1.charAt(1);
             if(t1.contains("=")) {
-                String res="MOV "+"R"+reg.get(t3)+","+t2;
+                String res="MOV "+t2+" R"+reg.get(t3);
                 out.add(res);
                 f=1;
                 continue;
             }
             genReg(t2);
-            genReg(t3);
+            //genReg(t3);
             String op="";
             if(t1.contains("+")) 
                 op="ADD";
@@ -48,7 +48,7 @@ class codegen {
             else if(t1.contains("/"))
                 op="DIV";
 
-            op+=" R"+reg.get(t2)+",R"+reg.get(t3);
+            op+=" "+t3+",R"+reg.get(t2);
             int r=reg.get(t2);
             reg.remove(t2);
             reg.put(s1,r);
@@ -126,10 +126,6 @@ class codegen {
             String t1="MOV "+st+",R"+rn;
             out.add(t1);
             rn++;
-        }
-        else {
-            String t1="MOV "+st+",R"+reg.get(st);
-            out.add(t1);
         }
     }
 
